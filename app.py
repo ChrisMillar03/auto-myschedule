@@ -5,9 +5,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-load_dotenv()
-
-def fetchSchedule(weeks=2, timeout=4):
+def fetchSchedule(mcd_user, mcd_pass, weeks=2, timeout=4):
 	options = webdriver.ChromeOptions()
 	options.add_argument("--headless")
 
@@ -19,8 +17,8 @@ def fetchSchedule(weeks=2, timeout=4):
 	password = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("xpath", "//input[@placeholder='Enter password']")))
 	submit = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("id", "loginButton")))
 
-	username.send_keys(os.getenv("MCD_USERNAME"))
-	password.send_keys(os.getenv("MCD_PASSWORD"))
+	username.send_keys(mcd_user)
+	password.send_keys(mcd_pass)
 	submit.click()
 
 	try:
@@ -48,4 +46,5 @@ def fetchSchedule(weeks=2, timeout=4):
 	driver.quit()
 
 if __name__ == "__main__":
-	fetchSchedule()
+	load_dotenv()
+	fetchSchedule(os.getenv("MCD_USERNAME"), os.getenv("MCD_PASSWORD"))
