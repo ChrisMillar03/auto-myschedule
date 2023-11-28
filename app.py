@@ -22,14 +22,17 @@ def fetchSchedule(mcd_user, mcd_pass, weeks=2, timeout=4):
 	submit.click()
 
 	try:
-		schedule = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("xpath", "//*[@id='systemLink']/div[2]/div")))
-		schedule.click()
+		menu = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("id", "menu-ESS")))
+		menu.click()
 	except TimeoutException:
-		print("Unable to find schedule redirect, are the login details correct?")
+		print("Unable to find navigation menu, are the login details correct?")
 		driver.quit()
 		return
 
-	frame = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("class name", "how-do-div-iframe")))
+	schedule = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("xpath", "//div[@class='ps-content']/mat-accordion[1]")))
+	schedule.click()
+
+	frame = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("id", "ESS_ESS^ESS")))
 	driver.switch_to.frame(frame)
 
 	for i in range(weeks):
