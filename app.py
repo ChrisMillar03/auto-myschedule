@@ -61,9 +61,9 @@ def fetch_schedule(mcd_user, mcd_pass, weeks=2, timeout=4):
 		menu = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("id", "menu-ESS")))
 		menu.click()
 	except TimeoutException:
-		print("Unable to find navigation menu, captcha solver likely failed.")
 		driver.quit()
-		return
+
+		return False
 
 	schedule = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("xpath", "//div[@class='ps-content']/mat-accordion[1]")))
 	schedule.click()
@@ -76,7 +76,7 @@ def fetch_schedule(mcd_user, mcd_pass, weeks=2, timeout=4):
 			rows = WebDriverWait(driver, timeout).until(EC.visibility_of_all_elements_located(("class name", "empShiftRowTable")))
 			driver.save_screenshot(f"week{i}.png")
 		except TimeoutException:
-			print("No more weeks left to fetch")
+			print("No more weeks left to fetch.")
 			break
 
 		nextWeek = WebDriverWait(driver, timeout).until(EC.visibility_of_element_located(("class name", "calNextButton")))
@@ -84,7 +84,14 @@ def fetch_schedule(mcd_user, mcd_pass, weeks=2, timeout=4):
 
 	driver.quit()
 
+	return True
+
 if __name__ == "__main__":
 	load_dotenv()
-	fetch_schedule(os.getenv("MCD_USERNAME"), os.getenv("MCD_PASSWORD"))
+
+	if fetch_schedule(os.getenv("MCD_USERNAME"), os.getenv("MCD_PASSWORD")):
+		print("Schedule successfully fetched.")
+	else:
+		print("An error occurred fetching elements, captcha solver likely failed.")
+	
 	time.sleep(5)
