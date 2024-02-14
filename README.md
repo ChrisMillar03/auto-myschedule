@@ -10,7 +10,7 @@ MCD_USERNAME=
 MCD_PASSWORD=
 ```
 
-3. Run app.py and enjoy not having to log in every time you're checking shifts.
+3. Run app.py and enjoy not having to solve captchas every time you're checking shifts.
 
 ## Potential Errors:
 If you get an error with this script there could be multiple reasons:
@@ -18,3 +18,5 @@ If you get an error with this script there could be multiple reasons:
 - Your login details in the .env file are incorrect
 - Your password hasn't been updated in the last 180 days
 - The site layout has changed and the script hasn't been updated
+
+**tensorflow only works with Python 3.9 to 3.11**
